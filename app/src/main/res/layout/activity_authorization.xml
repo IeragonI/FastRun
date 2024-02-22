@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:padding="10dp"
+    android:layout_width="match_parent"
+    android:background="@drawable/fon_activity"
+    android:layout_height="match_parent"
+    tools:context=".Authorization">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.473"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/icon_reg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="90dp"
+            android:layout_marginLeft="20dp"
+            android:src="@drawable/icon_reg" />
+        <ImageView
+            android:id="@+id/welcome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="20dp"
+            android:src="@drawable/text_autoreg" />
+        <ImageView
+            android:id="@+id/txt_email"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:layout_marginLeft="55dp"
+            android:src="@drawable/txt_email" />
+
+        <EditText
+            android:id="@+id/edt_email_au"
+            android:layout_width="330dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:background="@drawable/edt_email"
+            android:ems="10"
+            android:layout_marginTop="10dp"
+            android:maxLines="1"
+            android:hint="Введите логин"
+            android:inputType="text"
+            android:paddingLeft="55dp"
+            android:textColor="@color/edt"
+            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"/>/>
+
+        <ImageView
+            android:id="@+id/txt_pass"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="55dp"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/txt_pass" />
+
+        <EditText
+            android:id="@+id/edt_pass_au"
+            android:layout_width="330dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/edt_pass"
+            android:ems="10"
+            android:maxLines="1"
+            android:maxLength="20"
+            android:hint="Введите пароль"
+            android:inputType="text"
+            android:paddingLeft="55dp"
+            android:textColor="@color/edt"
+            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"/>/>
+
+        <ImageButton
+            android:id="@+id/btn_login_au"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/btn_login"
+            android:paddingTop="160dp"
+            android:layout_gravity="center"
+            android:backgroundTint="#00000000"
+            android:contentDescription="login"/>
+
+        <ImageButton
+            android:id="@+id/btn_reg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/btn_register"
+            android:layout_gravity="center"
+            android:backgroundTint="#00000000"
+            android:contentDescription="reg"/>
+
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

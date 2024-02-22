@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:id="@+id/ll"
+        android:layout_width="257dp"
+        android:layout_height="317dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="50dp"
+        android:background="@drawable/fon_weight"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <ImageView
+            android:id="@+id/img_text_weight1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="70dp"
+            android:background="@drawable/text_weight1" />
+
+        <ImageView
+            android:id="@+id/img_text_weight2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/text_weight2"/>
+
+        <EditText
+            android:id="@+id/edt_ves"
+            android:layout_width="240dp"
+            android:layout_height="37dp"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/edt_weight"
+            android:gravity="center_horizontal"
+            android:hint="Ваш вес"
+            android:inputType="numberDecimal"
+            android:padding="10dp"
+            android:textColor="@color/edt"
+            android:textColorHint="@color/edt"
+            android:textSize="15dp" />
+
+    </LinearLayout>
+
+
+
+
+
+    <ImageButton
+        android:id="@+id/btn_confirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_confirm_weight"
+        app:layout_constraintStart_toStartOf="@id/ll"
+        app:layout_constraintEnd_toEndOf="@id/ll"
+        app:layout_constraintTop_toBottomOf="@id/ll"
+        app:layout_constraintBottom_toBottomOf="@id/ll"/>
+
+    <LinearLayout
+        android:id="@+id/imageView6"
+        android:layout_width="wrap_content"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg"
+        app:layout_constraintBottom_toTopOf="@+id/btn_confirm"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.1">
+
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="5dp"
+            android:padding="16dp"
+            android:layout_weight="1"
+            android:src="@drawable/edit_square" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
