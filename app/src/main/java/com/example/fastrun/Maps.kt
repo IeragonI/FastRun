@@ -87,8 +87,8 @@ class Maps : AppCompatActivity() {
         requestLocationPermission()
         getLastLocation()
         val prefs_c: SharedPreferences = this@Maps.getSharedPreferences("coordinati", Context.MODE_PRIVATE)
-        var longit:Double = prefs_c.getFloat("longit", 55.755864F).toDouble()
-        var latit:Double = prefs_c.getFloat("latit", 37.617698F).toDouble()
+        var longit:Double = prefs_c.getFloat("longit", 37.617698F).toDouble()
+        var latit:Double = prefs_c.getFloat("latit", 55.755864F).toDouble()
 
         var locationonmapkit = mapKit.createUserLocationLayer(mapview.mapWindow)
         mapview.map.move(
@@ -106,7 +106,6 @@ class Maps : AppCompatActivity() {
         val editor = prefs.edit()
         if (checkPermissions()) {
             if (isLocationEnabled()) {
-
                 mFusedLocationClient.lastLocation.addOnCompleteListener(this) { task ->
                     var location: Location? = task.result
                     if (location == null) {

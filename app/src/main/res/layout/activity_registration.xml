@@ -51,6 +51,7 @@
             android:maxLines="1"
             android:maxLength="20"
             android:hint="Введите свое имя"
+            android:textColorHint="@color/edt"
             android:paddingLeft="55dp"
             android:textColor="@color/edt"
             android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZабвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ0123456789"
@@ -75,6 +76,7 @@
             android:hint="Введите логин"
             android:inputType="textFilter"
             android:maxLines="1"
+            android:textColorHint="@color/edt"
             android:paddingLeft="55dp"
             android:textColor="@color/edt"
             android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"/>/>
@@ -98,6 +100,7 @@
             android:maxLines="1"
             android:maxLength="20"
             android:hint="Введите пароль"
+            android:textColorHint="@color/edt"
             android:inputType="text"
             android:paddingLeft="55dp"
             android:textColor="@color/edt"

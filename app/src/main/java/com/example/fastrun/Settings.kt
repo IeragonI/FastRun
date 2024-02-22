@@ -47,7 +47,6 @@ lateinit var settings_profile:ImageButton
 lateinit var txt_weight:TextView
 
 
-
 class Settings : AppCompatActivity() {
 
     var km:Float? = 0f
@@ -67,8 +66,6 @@ class Settings : AppCompatActivity() {
         img_policy = findViewById(R.id.policy)
 
 
-
-
         val prefs: SharedPreferences = this.getSharedPreferences("settings", Context.MODE_PRIVATE)
         val lal:SharedPreferences = getSharedPreferences("FastPrefs", Context.MODE_PRIVATE)
         val editor_steps = lal.edit()
@@ -78,7 +75,7 @@ class Settings : AppCompatActivity() {
         getData(id)
         /*var km:Float = lal.getFloat("km", 0f)
         var ckal:Float = lal.getFloat("ckal", 0f)*/
-        
+
         settings_map = findViewById(R.id.settings_maps)
         settings_home = findViewById(R.id.settings_home)
         settings_analitic = findViewById(R.id.settings_analitic)
