@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
             android:layout_marginLeft="55dp"
-            android:src="@drawable/txt_fio" />
+            android:src="@drawable/txt_name" />
 
         <EditText
             android:id="@+id/edt_fio"
@@ -63,7 +63,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:layout_marginLeft="55dp"
-            android:src="@drawable/txt_email" />
+            android:src="@drawable/login" />
 
         <EditText
             android:id="@+id/edt_email"

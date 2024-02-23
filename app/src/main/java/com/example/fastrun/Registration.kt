@@ -43,7 +43,7 @@ class Registration : AppCompatActivity() {
             var login:String = edt_email.text.toString()
             var pass:String = edt_pass.text.toString()
             getData(login)
-            if (dost != -1){
+            if (dost == 1){
                 if ((name != "") and (login != "") and (pass != "")){
                     insertData(name,login,pass)
                     startActivity(Intent(this@Registration,Authorization::class.java))

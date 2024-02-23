@@ -38,9 +38,7 @@ class Authorization : AppCompatActivity() {
             var login:String = edt_email.text.toString()
             var pass:String = edt_pass.text.toString()
             getData(login,pass)
-            if (tost == 1){
-                Toast.makeText(this@Authorization, "Такого аккаунта не существует", Toast.LENGTH_SHORT).show()
-            }
+
         }
     }
 
@@ -64,11 +62,16 @@ class Authorization : AppCompatActivity() {
                     startActivity(intent)
                     break
                 }else if((log == bd[b].Login.toString()) and (pass != bd[b].Password.toString())){
-                    Toast.makeText(this@Authorization, "Пароль не подходит!", Toast.LENGTH_SHORT).show()
-                }else if((log != bd[b].Login.toString()) and (pass != bd[b].Password.toString())){
+                    tost = 2
+                }else{
                     tost = 1
                 }
                 b++
+            }
+            if (tost == 1){
+                Toast.makeText(this@Authorization, "Такого аккаунта не существует", Toast.LENGTH_SHORT).show()
+            }else if(tost == 2){
+                Toast.makeText(this@Authorization, "Пароль не подходит!", Toast.LENGTH_SHORT).show()
             }
         }
     }

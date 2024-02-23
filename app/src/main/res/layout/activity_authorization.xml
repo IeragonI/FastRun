@@ -33,14 +33,14 @@
             android:layout_marginTop="5dp"
             android:layout_marginLeft="20dp"
             android:src="@drawable/text_autoreg" />
+
         <ImageView
             android:id="@+id/txt_email"
-
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
             android:layout_marginLeft="55dp"
-            android:src="@drawable/txt_email" />
+            android:src="@drawable/login" />
 
         <EditText
             android:id="@+id/edt_email_au"
