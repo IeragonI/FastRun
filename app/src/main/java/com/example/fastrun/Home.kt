@@ -462,10 +462,9 @@ class Home : AppCompatActivity(), SensorEventListener {
             }
 
             if (savedNumber_all.toInt() == 0){
-                previousTotalSteps_all = totalSteps_all
+                Zapusk2()
                 editor.putInt("key2_1", 1)
                 editor.apply()
-                saveData2()
             }
         }
     }
@@ -504,6 +503,11 @@ class Home : AppCompatActivity(), SensorEventListener {
         saveData()
     }
 
+    fun Zapusk2(){
+        previousTotalSteps_all = totalSteps_all
+        saveData2()
+    }
+
     private fun saveData() {
         val sharedPreferences = getSharedPreferences("FastPrefs", Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
@@ -522,7 +526,8 @@ class Home : AppCompatActivity(), SensorEventListener {
         val sharedPreferences = getSharedPreferences("FastPrefs", Context.MODE_PRIVATE)
         val savedNumber = sharedPreferences.getFloat("key1", 0f)
         val savedNumber2 = sharedPreferences.getFloat("key1_1", 0f)
-        Log.d("MainActivity", "$savedNumber")
+//        Log.d("MainActivity", "$savedNumber")
+//        Log.d("MainActivity", "$savedNumber2")
         previousTotalSteps = savedNumber
         previousTotalSteps_all = savedNumber2
     }

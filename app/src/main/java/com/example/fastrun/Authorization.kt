@@ -59,11 +59,12 @@ class Authorization : AppCompatActivity() {
                     id = bd[b].id.toInt()
                     editor.putInt("ke", 1).apply()
                     edit_pref.putInt("id",id).apply()
+                    tost = 0
                     startActivity(intent)
                     break
                 }else if((log == bd[b].Login.toString()) and (pass != bd[b].Password.toString())){
                     tost = 2
-                }else{
+                }else if(log != bd[b].Login.toString()){
                     tost = 1
                 }
                 b++
