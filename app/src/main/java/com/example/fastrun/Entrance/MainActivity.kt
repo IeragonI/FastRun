@@ -1,17 +1,15 @@
-package com.example.fastrun
+package com.example.fastrun.Entrance
 
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
 import android.widget.ImageButton
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
+import com.example.fastrun.R
 
 var x:Int = 0
 class MainActivity : AppCompatActivity() {
@@ -50,9 +48,12 @@ class MainActivity : AppCompatActivity() {
 class SimpleFragmentPagerAdapter(fm: FragmentManager?) : FragmentPagerAdapter(fm!!) {
     override fun getItem(position: Int): Fragment {
     when (position){
-        0 -> {x = 0}
-        1 ->{x = 1}
-        else ->{x = 2}
+        0 -> {
+            x = 0}
+        1 ->{
+            x = 1}
+        else ->{
+            x = 2}
     }
 
     return when (position) {

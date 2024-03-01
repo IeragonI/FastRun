@@ -1,4 +1,4 @@
-package com.example.fastrun
+package com.example.fastrun.Main
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -18,7 +18,6 @@ import android.icu.util.Calendar
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -30,7 +29,11 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
+import com.example.fastrun.DLC.AlarmReceiver
+import com.example.fastrun.Entrance.MainActivity
+import com.example.fastrun.R
 import io.github.jan.supabase.createSupabaseClient
+import io.github.jan.supabase.exceptions.HttpRequestException
 import io.github.jan.supabase.postgrest.Postgrest
 import io.github.jan.supabase.postgrest.from
 import kotlinx.coroutines.launch
@@ -42,7 +45,7 @@ var currentSteps:Int = 0
 
 
 class Home : AppCompatActivity(), SensorEventListener {
-
+    var dostup: String = ""
 //    lateinit var mSensorManager: SensorManager
 //    var mStepCounter:Float = 0f
     lateinit var txt_prog: TextView
@@ -217,19 +220,29 @@ class Home : AppCompatActivity(), SensorEventListener {
 
         var intent_home_maps:Intent = Intent(this@Home, Maps::class.java)
         var intent_home_sett:Intent = Intent(this@Home, Settings::class.java)
+        val prefs_set: SharedPreferences = this@Home.getSharedPreferences("settings", Context.MODE_PRIVATE)
+        dostup = prefs_set.getString("dostup","0").toString()
 
         menu_maps.setOnClickListener {
-            startActivity(intent_home_maps)
-            overridePendingTransition(R.anim.to_right_in, R.anim.to_right_out)
+            if (dostup == "1"){
+                startActivity(intent_home_maps)
+                overridePendingTransition(R.anim.to_right_in, R.anim.to_right_out)
+            }else if (dostup == "0"){
+                Toast.makeText(this@Home,"Сначала авторизуйтесь",Toast.LENGTH_SHORT).show()
+            }
+
         }
+
         menu_analitic.setOnClickListener {
 
             overridePendingTransition(R.anim.to_left_in, R.anim.to_left_out)
         }
+
         menu_settings.setOnClickListener {
             startActivity(intent_home_sett)
             overridePendingTransition(R.anim.to_left_in, R.anim.to_left_out)
         }
+
         menu_profile.setOnClickListener {
 
             overridePendingTransition(R.anim.to_right_in, R.anim.to_right_out)
@@ -424,7 +437,7 @@ class Home : AppCompatActivity(), SensorEventListener {
         val editor = sharedPreferences.edit()
         val prefs: SharedPreferences = this@Home.getSharedPreferences("settings", Context.MODE_PRIVATE)
         val editor2 = prefs.edit()
-        val id:Int = prefs.getInt("id", 1)
+        val id:Int = prefs.getInt("id", -1)
         if (running) {
 
             totalSteps = event!!.values[0]
@@ -434,8 +447,8 @@ class Home : AppCompatActivity(), SensorEventListener {
             currentSteps = totalSteps.toInt() - previousTotalSteps.toInt()
             currentSteps_all = totalSteps_all.toInt() - previousTotalSteps_all.toInt()
 
-            ckal = (0.0006*0.9*currentSteps*ves).toFloat()
-            put_km = ((currentSteps*0.7)/1000).toFloat()
+            ckal = (0.0006*0.9* currentSteps *ves).toFloat()
+            put_km = ((currentSteps *0.7)/1000).toFloat()
             ckal_all = (0.0006*0.9*currentSteps_all*ves).toFloat()
             put_km_all = ((currentSteps_all*0.7)/1000).toFloat()
 
@@ -448,10 +461,15 @@ class Home : AppCompatActivity(), SensorEventListener {
             txt_km.text = "${String.format("%.2f", put_km)}"
             txt_ckal.text = "${String.format("%.2f", ckal)}"
             editor.putInt("shagi_1", currentSteps)
-            /*editor.putFloat("km",put_km_all)
-            editor.putFloat("ckal",ckal_all)*/
             editor.apply()
-            updateData(id, put_km_all, ckal_all)
+            if (dostup == "1"){
+                updateData(id, put_km_all, ckal_all)
+            }else if(dostup == "0"){
+                editor.putFloat("km",put_km_all).apply()
+                editor.putFloat("ckal",ckal_all).apply()
+            }
+
+
             if (savedNumber.toInt() == 0){
                 tv_stepsTaken.text = 0.toString()
                 Zapusk()
@@ -583,16 +601,24 @@ class Home : AppCompatActivity(), SensorEventListener {
     }
 
     private fun updateData(id:Int, km:Float, ckal:Float) {
+        val sharedPreferences = getSharedPreferences("FastPrefs", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
         lifecycleScope.launch {
-            supabase.from("FastRan").update(
-                {
-                    set("All_km", km)
-                    set("All_ckal",ckal)
+            try {
+                supabase.from("FastRan").update(
+                    {
+                        set("All_km", km)
+                        set("All_ckal", ckal)
+                    }
+                ) {
+                    filter {
+                        eq("id", id)
+                    }
                 }
-            ) {
-                filter {
-                    eq("id", id)
-                }
+            }catch (e:HttpRequestException){
+                editor.putFloat("km",put_km_all)
+                editor.putFloat("ckal",ckal_all)
+                editor.apply()
             }
         }
     }

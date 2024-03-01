@@ -1,4 +1,4 @@
-package com.example.fastrun
+package com.example.fastrun.Main
 
 import android.content.Context
 import android.content.Intent
@@ -9,21 +9,22 @@ import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
+import com.example.fastrun.Entrance.FastRan
+import com.example.fastrun.Entrance.Registration
+import com.example.fastrun.R
 import io.github.jan.supabase.createSupabaseClient
+import io.github.jan.supabase.exceptions.HttpRequestException
 import io.github.jan.supabase.postgrest.Postgrest
 import io.github.jan.supabase.postgrest.from
 import kotlinx.coroutines.launch
-import kotlin.collections.Map
 
 var cel_steps = arrayOf(4000, 5000, 6000, 7000, 8000, 9000, 10000)
 var lang = arrayOf("Русский","English")
@@ -55,7 +56,7 @@ class Settings : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         window.statusBarColor = ContextCompat.getColor(this, R.color.white)
         setContentView(R.layout.activity_settings2)
-
+        val lal:SharedPreferences = this@Settings.getSharedPreferences("FastPrefs", Context.MODE_PRIVATE)
         img_sett = findViewById(R.id.img_sett)
         img_total = findViewById(R.id.img_total)
         img_cel_steps = findViewById(R.id.img_cel_steps)
@@ -66,15 +67,16 @@ class Settings : AppCompatActivity() {
         img_policy = findViewById(R.id.policy)
 
 
-        val prefs: SharedPreferences = this.getSharedPreferences("settings", Context.MODE_PRIVATE)
-        val lal:SharedPreferences = getSharedPreferences("FastPrefs", Context.MODE_PRIVATE)
-        val editor_steps = lal.edit()
+        val prefs: SharedPreferences = this@Settings.getSharedPreferences("settings", Context.MODE_PRIVATE)
+
+        val editor_lal = lal.edit()
         val editor = prefs.edit()
         val ves_select:Float = prefs.getFloat("ves",0f)
         var id:Int = prefs.getInt("id",0)
         getData(id)
-        /*var km:Float = lal.getFloat("km", 0f)
-        var ckal:Float = lal.getFloat("ckal", 0f)*/
+
+
+
 
         settings_map = findViewById(R.id.settings_maps)
         settings_home = findViewById(R.id.settings_home)
@@ -112,7 +114,10 @@ class Settings : AppCompatActivity() {
 
 
         val spin: Spinner = findViewById(R.id.spin_shagi)
-        val aa = ArrayAdapter(this@Settings,R.layout.spinner_fon_shagi,R.id.spin_txt_shagi, cel_steps)
+        val aa = ArrayAdapter(this@Settings,
+            R.layout.spinner_fon_shagi,
+            R.id.spin_txt_shagi, cel_steps
+        )
         spin.adapter = aa
 
         spin.setSelection(prefs.getInt("spinnerSelection", 3))
@@ -142,7 +147,7 @@ class Settings : AppCompatActivity() {
         }
 
         val spin2:Spinner = findViewById(R.id.spin_language)
-        val bb = ArrayAdapter(this@Settings,R.layout.spinner_fon_lang,R.id.spin_txt_lang, lang)
+        val bb = ArrayAdapter(this@Settings, R.layout.spinner_fon_lang, R.id.spin_txt_lang, lang)
         spin2.adapter = bb
 
         spin2.setSelection(prefs.getInt("select_lang", 0))
@@ -216,23 +221,50 @@ class Settings : AppCompatActivity() {
 
             }
         }
+
+        var exit:ImageView = findViewById(R.id.share)
+        val intent_to_reg:Intent = Intent(this@Settings,Registration::class.java)
+        val pref_aureg: SharedPreferences = this@Settings.getSharedPreferences("pref_aureg", Context.MODE_PRIVATE)
+        val editor_aureg = pref_aureg.edit()
+        exit.setOnClickListener{
+            editor_lal.putString("dostup","0").apply()
+            editor_aureg.putInt("ke",0).apply()
+            startActivity(intent_to_reg)
+        }
     }
 
     private fun getData(id:Int){
         var c:Int = 0
         var txt_km:TextView = findViewById(R.id.none_km_sett)
         var txt_ckal:TextView = findViewById(R.id.none_kkal_sett)
-        lifecycleScope.launch{
-            val bd = supabase.from("FastRan").select().decodeList<FastRan>()
-            while (c < bd.size){
-                if (id == bd[c].id.toInt()){
-                    km = bd[c].All_km?.toFloat()
-                    ckal = bd[c].All_ckal?.toFloat()
-                    txt_km.text = "${String.format("%.2f", km)}"
-                    txt_ckal.text = "${String.format("%.2f", ckal)}"
-                    break
+        val lal1:SharedPreferences = this@Settings.getSharedPreferences("FastPrefs", Context.MODE_PRIVATE)
+        var dostup:String = lal1.getString("dostup","0").toString()
+        lifecycleScope.launch {
+            if (dostup == "1") {
+                try {
+                    val bd = supabase.from("FastRan").select().decodeList<FastRan>()
+                    while (c < bd.size) {
+                        if (id == bd[c].id.toInt()) {
+                            km = bd[c].All_km?.toFloat()
+                            ckal = bd[c].All_ckal?.toFloat()
+                            txt_km.text = "${String.format("%.2f", km)}"
+                            txt_ckal.text = "${String.format("%.2f", ckal)}"
+                            break
+                        }
+                        c++
+                    }
+                } catch (e: HttpRequestException) {
+                    var km_no: Float = lal1.getFloat("km", 0f)
+                    var ckal_no: Float = lal1.getFloat("ckal", 0f)
+                    txt_km.text = "${String.format("%.2f", km_no)}"
+                    txt_ckal.text = "${String.format("%.2f", ckal_no)}"
                 }
-                c++
+            }
+            else if (dostup == "0"){
+                var km_no: Float = lal1.getFloat("km", 1f)
+                var ckal_no: Float = lal1.getFloat("ckal", 1f)
+                txt_km.text = "${String.format("%.2f", km_no)}"
+                txt_ckal.text = "${String.format("%.2f", ckal_no)}"
             }
         }
     }

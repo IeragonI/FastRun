@@ -1,4 +1,4 @@
-package com.example.fastrun
+package com.example.fastrun.Entrance
 
 import android.content.Context
 import android.content.Intent
@@ -7,12 +7,17 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
+import com.example.fastrun.Main.Home
+import com.example.fastrun.R
 import io.github.jan.supabase.createSupabaseClient
+import io.github.jan.supabase.exceptions.HttpRequestException
 import io.github.jan.supabase.postgrest.Postgrest
 import io.github.jan.supabase.postgrest.from
+import io.ktor.client.request.HttpRequest
 import kotlinx.coroutines.launch
 
 class Authorization : AppCompatActivity() {
@@ -25,7 +30,18 @@ class Authorization : AppCompatActivity() {
         val edt_pass:EditText = findViewById(R.id.edt_pass_au)
         val btn_reg: ImageButton = findViewById(R.id.btn_reg)
         val btn_log_au:ImageButton = findViewById(R.id.btn_login_au)
+        val txt_scip:TextView = findViewById(R.id.txt_scip_au)
 
+        val intent_to_main: Intent = Intent(this@Authorization, Home::class.java)
+        val prefs: SharedPreferences = this@Authorization.getSharedPreferences("settings", Context.MODE_PRIVATE)
+        val prefs_aureg: SharedPreferences = this.getSharedPreferences("pref_aureg", Context.MODE_PRIVATE)
+        val editor_aureg = prefs_aureg.edit()
+        val editor = prefs.edit()
+        txt_scip.setOnClickListener {
+            editor.putString("dostup","0").apply()
+            editor_aureg.putInt("ke", 1).apply()
+            startActivity(intent_to_main)
+        }
 
         val intent_to_reg: Intent = Intent(this@Authorization, Registration::class.java)
 
@@ -39,6 +55,9 @@ class Authorization : AppCompatActivity() {
             var pass:String = edt_pass.text.toString()
             getData(login,pass)
 
+
+
+
         }
     }
 
@@ -51,28 +70,33 @@ class Authorization : AppCompatActivity() {
         var b:Int = 0
         var id:Int = 0
         lifecycleScope.launch{
-            val bd = supabase.from("FastRan").select().decodeList<FastRan>()
-            b = 0
-            val intent = Intent(this@Authorization,Home::class.java)
-            while (b < bd.size){
-                if((log == bd[b].Login.toString()) and (pass == bd[b].Password.toString())){
-                    id = bd[b].id.toInt()
-                    editor.putInt("ke", 1).apply()
-                    edit_pref.putInt("id",id).apply()
-                    tost = 0
-                    startActivity(intent)
-                    break
-                }else if((log == bd[b].Login.toString()) and (pass != bd[b].Password.toString())){
-                    tost = 2
-                }else if(log != bd[b].Login.toString()){
-                    tost = 1
+            try{
+                val bd = supabase.from("FastRan").select().decodeList<FastRan>()
+                b = 0
+                val intent = Intent(this@Authorization, Home::class.java)
+                while (b < bd.size){
+                    if((log == bd[b].Login.toString()) and (pass == bd[b].Password.toString())){
+                        id = bd[b].id.toInt()
+                        editor.putInt("ke", 1).apply()
+                        edit_pref.putInt("id",id).apply()
+                        tost = 0
+                        edit_pref.putString("dostup","1").apply()
+                        startActivity(intent)
+                        break
+                    }else if((log == bd[b].Login.toString()) and (pass != bd[b].Password.toString())){
+                        tost = 2
+                    }else if(log != bd[b].Login.toString()){
+                        tost = 1
+                    }
+                    b++
                 }
-                b++
-            }
-            if (tost == 1){
-                Toast.makeText(this@Authorization, "Такого аккаунта не существует", Toast.LENGTH_SHORT).show()
-            }else if(tost == 2){
-                Toast.makeText(this@Authorization, "Пароль не подходит!", Toast.LENGTH_SHORT).show()
+                if (tost == 1){
+                    Toast.makeText(this@Authorization, "Такого аккаунта не существует", Toast.LENGTH_SHORT).show()
+                }else if(tost == 2){
+                    Toast.makeText(this@Authorization, "Пароль не подходит!", Toast.LENGTH_SHORT).show()
+                }
+            }catch(e: HttpRequestException){
+                Toast.makeText(this@Authorization,"No Internet connection!", Toast.LENGTH_SHORT).show()
             }
         }
     }

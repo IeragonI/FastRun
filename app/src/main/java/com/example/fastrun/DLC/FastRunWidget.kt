@@ -1,4 +1,4 @@
-package com.example.fastrun
+package com.example.fastrun.DLC
 
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
@@ -7,6 +7,9 @@ import android.content.SharedPreferences
 import android.os.Handler
 import android.os.Looper
 import android.widget.RemoteViews
+import com.example.fastrun.Main.currentSteps
+import com.example.fastrun.Main.selectedPosition
+import com.example.fastrun.R
 
 /**
  * Implementation of App Widget functionality.

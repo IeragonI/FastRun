@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:background="@drawable/fon_activity"
     android:layout_height="match_parent"
-    tools:context=".Settings">
+    tools:context=".Main.Settings">
 
     <Spinner
         android:id="@+id/spin_shagi"

@@ -1,4 +1,4 @@
-package com.example.fastrun
+package com.example.fastrun.DLC
 
 import android.content.BroadcastReceiver
 import android.content.Context

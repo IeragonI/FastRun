@@ -1,4 +1,4 @@
-package com.example.fastrun
+package com.example.fastrun.Main
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -12,10 +12,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Looper
 import android.widget.ImageButton
-import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.example.fastrun.R
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest

@@ -1,17 +1,20 @@
-package com.example.fastrun
+package com.example.fastrun.Entrance
 
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.content.SharedPreferences.Editor
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
+import com.example.fastrun.Main.Home
+import com.example.fastrun.R
 import io.github.jan.supabase.createSupabaseClient
+import io.github.jan.supabase.exceptions.HttpRequestException
 import io.github.jan.supabase.postgrest.Postgrest
 import io.github.jan.supabase.postgrest.from
 import kotlinx.coroutines.launch
@@ -29,7 +32,18 @@ class Registration : AppCompatActivity() {
         var edt_email:EditText = findViewById(R.id.edt_email)
         var btn_auth:ImageButton = findViewById(R.id.btn_auth)
         var btn_login:ImageButton = findViewById(R.id.btn_login_reg)
+        val txt_scip: TextView = findViewById(R.id.txt_scip_reg)
 
+        val intent_to_main: Intent = Intent(this@Registration, Home::class.java)
+        val prefs: SharedPreferences = this@Registration.getSharedPreferences("settings", Context.MODE_PRIVATE)
+        val editor = prefs.edit()
+        val prefs_aureg: SharedPreferences = this.getSharedPreferences("pref_aureg", Context.MODE_PRIVATE)
+        val editor_aureg = prefs_aureg.edit()
+        txt_scip.setOnClickListener {
+            editor.putString("dostup","0").apply()
+            editor_aureg.putInt("ke", 1).apply()
+            startActivity(intent_to_main)
+        }
 
         /*val prefs: SharedPreferences = this.getSharedPreferences("pref_aureg", Context.MODE_PRIVATE)
         val editor:Editor = prefs.edit()*/
@@ -37,6 +51,7 @@ class Registration : AppCompatActivity() {
         btn_auth.setOnClickListener {
             startActivity(intent)
         }
+
 
         btn_login.setOnClickListener {
             var name:String = edt_fio.text.toString()
@@ -46,13 +61,15 @@ class Registration : AppCompatActivity() {
             if (dost == 1){
                 if ((name != "") and (login != "") and (pass != "")){
                     insertData(name,login,pass)
-                    startActivity(Intent(this@Registration,Authorization::class.java))
+
+                    startActivity(Intent(this@Registration, Authorization::class.java))
                 }else{
                     Toast.makeText(this@Registration, "Нельзя оставлять пустыми\nполя ввода", Toast.LENGTH_SHORT).show()
                 }
             }else if (dost == -1){
                 Toast.makeText(this@Registration,"Такой логин уже занят", Toast.LENGTH_SHORT).show()
             }
+
         }
     }
 
@@ -60,23 +77,32 @@ class Registration : AppCompatActivity() {
 
     private fun insertData(name:String, login:String, password:String){
         lifecycleScope.launch{
-            var nlp = FastRan(Name = name, Login = login, Password = password)
-            supabase.from("FastRan").insert(nlp)
+            try{
+                var nlp = FastRan(Name = name, Login = login, Password = password)
+                supabase.from("FastRan").insert(nlp)
+            }catch (e:HttpRequestException){
+                Toast.makeText(this@Registration,"No Internet connection!", Toast.LENGTH_SHORT).show()
+            }
+
         }
     }
 
     private fun getData(login: String){
         var a:Int = 0
         lifecycleScope.launch{
-            val bd = supabase.from("FastRan").select().decodeList<FastRan>()
-            while (a < bd.size){
-                if (login == bd[a].Login){
-                    dost = -1
-                    break
-                }else if (login != bd[a].Login){
-                    dost = 1
+            try{
+                val bd = supabase.from("FastRan").select().decodeList<FastRan>()
+                while (a < bd.size){
+                    if (login == bd[a].Login){
+                        dost = -1
+                        break
+                    }else if (login != bd[a].Login){
+                        dost = 1
+                    }
+                    a++
                 }
-                a++
+            }catch (e:HttpRequestException){
+                Toast.makeText(this@Registration,"No Internet connection!", Toast.LENGTH_SHORT).show()
             }
         }
     }
