@@ -1,4 +1,4 @@
-package com.example.fastrun
+package com.example.fastrun.Main
 
 import android.content.Context
 import android.content.Intent
@@ -9,21 +9,20 @@ import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
+import com.example.fastrun.Entrance.FastRan
+import com.example.fastrun.R
 import io.github.jan.supabase.createSupabaseClient
 import io.github.jan.supabase.postgrest.Postgrest
 import io.github.jan.supabase.postgrest.from
 import kotlinx.coroutines.launch
-import kotlin.collections.Map
 
 var cel_steps = arrayOf(4000, 5000, 6000, 7000, 8000, 9000, 10000)
 var lang = arrayOf("Русский","English")
@@ -112,7 +111,10 @@ class Settings : AppCompatActivity() {
 
 
         val spin: Spinner = findViewById(R.id.spin_shagi)
-        val aa = ArrayAdapter(this@Settings,R.layout.spinner_fon_shagi,R.id.spin_txt_shagi, cel_steps)
+        val aa = ArrayAdapter(this@Settings,
+            R.layout.spinner_fon_shagi,
+            R.id.spin_txt_shagi, cel_steps
+        )
         spin.adapter = aa
 
         spin.setSelection(prefs.getInt("spinnerSelection", 3))
@@ -142,7 +144,7 @@ class Settings : AppCompatActivity() {
         }
 
         val spin2:Spinner = findViewById(R.id.spin_language)
-        val bb = ArrayAdapter(this@Settings,R.layout.spinner_fon_lang,R.id.spin_txt_lang, lang)
+        val bb = ArrayAdapter(this@Settings, R.layout.spinner_fon_lang, R.id.spin_txt_lang, lang)
         spin2.adapter = bb
 
         spin2.setSelection(prefs.getInt("select_lang", 0))

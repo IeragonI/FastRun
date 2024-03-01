@@ -1,4 +1,4 @@
-package com.example.fastrun
+package com.example.fastrun.Entrance
 
 import android.content.Context
 import android.content.Intent
@@ -8,6 +8,9 @@ import android.os.Bundle
 import android.os.Handler
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
+import com.example.fastrun.Main.Home
+import com.example.fastrun.R
+import com.example.fastrun.Main.select_lang
 import com.yandex.mapkit.MapKitFactory
 
 class SplashScreen : AppCompatActivity() {

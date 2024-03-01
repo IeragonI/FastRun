@@ -1,4 +1,4 @@
-package com.example.fastrun
+package com.example.fastrun.Main
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -18,18 +18,19 @@ import android.icu.util.Calendar
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
+import com.example.fastrun.Adverse.AlarmReceiver
+import com.example.fastrun.Entrance.MainActivity
+import com.example.fastrun.R
 import io.github.jan.supabase.createSupabaseClient
 import io.github.jan.supabase.postgrest.Postgrest
 import io.github.jan.supabase.postgrest.from
@@ -434,8 +435,8 @@ class Home : AppCompatActivity(), SensorEventListener {
             currentSteps = totalSteps.toInt() - previousTotalSteps.toInt()
             currentSteps_all = totalSteps_all.toInt() - previousTotalSteps_all.toInt()
 
-            ckal = (0.0006*0.9*currentSteps*ves).toFloat()
-            put_km = ((currentSteps*0.7)/1000).toFloat()
+            ckal = (0.0006*0.9* currentSteps *ves).toFloat()
+            put_km = ((currentSteps *0.7)/1000).toFloat()
             ckal_all = (0.0006*0.9*currentSteps_all*ves).toFloat()
             put_km_all = ((currentSteps_all*0.7)/1000).toFloat()
 
